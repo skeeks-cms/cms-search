@@ -22,14 +22,13 @@ Configuration app
 ----------
 
 ```php
-//App config
 
 'components' =>
 [
     'cmsSearch' => [
         'class'     => 'skeeks\cms\search\CmsSearchComponent',
     ],
-    
+
     'i18n' => [
         'translations' =>
         [
@@ -42,13 +41,18 @@ Configuration app
             ]
         ]
     ],
+
+    /*'urlManager' => [
+        'rules' => [
+            'search'                                => 'cmsSearch/result',
+        ]
+    ]*/
 ],
 
 'modules' =>
 [
     'cmsSearch' => [
         'class'         => 'skeeks\cms\search\CmsSearchModule',
-        "controllerNamespace"       => 'skeeks\cms\search\console\controllers'
     ]
 ]
 
