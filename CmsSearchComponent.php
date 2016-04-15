@@ -14,7 +14,7 @@ use skeeks\cms\models\CmsContent;
 use skeeks\cms\models\CmsContentElement;
 use skeeks\cms\models\CmsContentElementProperty;
 use skeeks\cms\models\CmsContentProperty;
-use skeeks\cms\models\CmsSearchPhrase;
+use skeeks\cms\search\models\CmsSearchPhrase;
 use skeeks\cms\modules\admin\controllers\AdminModelEditorController;
 use skeeks\cms\rbac\CmsManager;
 use yii\base\BootstrapInterface;
@@ -200,7 +200,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             $pages = round($dataProvider->totalCount / $dataProvider->pagination->pageSize);
         }
 
-        $searchPhrase = new CmsSearchPhrase([
+        $searchPhrase = new \skeeks\cms\search\models\CmsSearchPhrase([
             'phrase'        => $this->searchQuery,
             'result_count'  => $dataProvider->totalCount,
             'pages'         => $pages,
