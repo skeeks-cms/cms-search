@@ -18,41 +18,39 @@ or add
 "skeeks/cms-search": "*"
 ```
 
-
-How to use
+Configuration app
 ----------
 
-### Configuration app
 ```php
 //App config
 
 'components' =>
-    [
-        'cmsSearch' => [
-            'class'     => 'skeeks\cms\search\CmsSearchComponent',
-        ],
-
-        'i18n' => [
-            'translations' =>
-            [
-                'skeeks/search' => [
-                    'class'             => 'yii\i18n\PhpMessageSource',
-                    'basePath'          => '@skeeks/cms/search/messages',
-                    'fileMap' => [
-                        'skeeks/search' => 'main.php',
-                    ],
-                ]
-            ]
-        ],
+[
+    'cmsSearch' => [
+        'class'     => 'skeeks\cms\search\CmsSearchComponent',
     ],
-
-    'modules' =>
-    [
-        'cmsSearch' => [
-            'class'         => 'skeeks\cms\search\CmsSearchModule',
-            "controllerNamespace"       => 'skeeks\cms\search\console\controllers'
+    
+    'i18n' => [
+        'translations' =>
+        [
+            'skeeks/search' => [
+                'class'             => 'yii\i18n\PhpMessageSource',
+                'basePath'          => '@skeeks/cms/search/messages',
+                'fileMap' => [
+                    'skeeks/search' => 'main.php',
+                ],
+            ]
         ]
+    ],
+],
+
+'modules' =>
+[
+    'cmsSearch' => [
+        'class'         => 'skeeks\cms\search\CmsSearchModule',
+        "controllerNamespace"       => 'skeeks\cms\search\console\controllers'
     ]
+]
 
 ```
 
