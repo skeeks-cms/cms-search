@@ -8,13 +8,11 @@
 namespace skeeks\cms\search\controllers;
 
 use skeeks\cms\components\Cms;
+use skeeks\cms\grid\CreatedByColumn;
 use skeeks\cms\grid\SiteColumn;
-use skeeks\cms\models\CmsAgent;
-use skeeks\cms\models\CmsContent;
-use skeeks\cms\models\CmsSearchPhrase;
-use skeeks\cms\modules\admin\actions\modelEditor\AdminMultiModelEditAction;
 use skeeks\cms\modules\admin\controllers\AdminModelEditorController;
 use skeeks\cms\modules\admin\traits\AdminModelEditorStandartControllerTrait;
+use skeeks\cms\search\models\CmsSearchPhrase;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -27,7 +25,7 @@ class AdminSearchPhraseController extends AdminModelEditorController
 
     public function init()
     {
-        $this->name                     = "РЎРїРёСЃРѕРє РїРµСЂРµС…РѕРґРѕРІ";
+        $this->name                     = \Yii::t('skeeks/search',"Jump list");
         $this->modelShowAttribute       = "phrase";
         $this->modelClassName           = CmsSearchPhrase::className();
 
@@ -42,6 +40,11 @@ class AdminSearchPhraseController extends AdminModelEditorController
         return ArrayHelper::merge(parent::actions(),
             [
                 'create' =>
+                [
+                    'visible' => false
+                ],
+
+                'update' =>
                 [
                     'visible' => false
                 ],
@@ -65,7 +68,12 @@ class AdminSearchPhraseController extends AdminModelEditorController
                         ],
 
                         [
-                            'class'         => SiteColumn::className()
+                            'class'         => SiteColumn::className(),
+                            'visible' => false
+                        ],
+
+                        [
+                            'class'         => CreatedByColumn::className(),
                         ],
 
                     ],

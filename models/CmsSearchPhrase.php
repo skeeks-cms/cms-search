@@ -8,6 +8,7 @@
 namespace skeeks\cms\search\models;
 
 use skeeks\cms\models\behaviors\Serialize;
+use skeeks\cms\models\CmsSite;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Request;
@@ -105,21 +106,21 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'id' => Yii::t('app', 'ID'),
-            'session_id' => Yii::t('app', 'Session ID'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'updated_by' => Yii::t('app', 'Updated By'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'phrase' => Yii::t('app', 'Search Phrase'),
-            'result_count' => Yii::t('app', 'Documents Found'),
-            'pages' => Yii::t('app', 'Pages Count'),
-            'ip' => Yii::t('app', 'Ip'),
-            'site_code' => Yii::t('app', 'Site'),
-            'data_server' => Yii::t('app', 'Data Server'),
-            'data_session' => Yii::t('app', 'Data Session'),
-            'data_cookie' => Yii::t('app', 'Data Cookie'),
-            'data_request' => Yii::t('app', 'Data Request'),
+            'id' => Yii::t('skeeks/search', 'ID'),
+            'session_id' => Yii::t('skeeks/search', 'Session ID'),
+            'created_by' => Yii::t('skeeks/search', 'Created By'),
+            'updated_by' => Yii::t('skeeks/search', 'Updated By'),
+            'created_at' => Yii::t('skeeks/search', 'Created At'),
+            'updated_at' => Yii::t('skeeks/search', 'Updated At'),
+            'phrase' => Yii::t('skeeks/search', 'Search Phrase'),
+            'result_count' => Yii::t('skeeks/search', 'Documents Found'),
+            'pages' => Yii::t('skeeks/search', 'Pages Count'),
+            'ip' => Yii::t('skeeks/search', 'Ip'),
+            'site_code' => Yii::t('skeeks/search', 'Site'),
+            'data_server' => Yii::t('skeeks/search', 'Data Server'),
+            'data_session' => Yii::t('skeeks/search', 'Data Session'),
+            'data_cookie' => Yii::t('skeeks/search', 'Data Cookie'),
+            'data_request' => Yii::t('skeeks/search', 'Data Request'),
         ]);
     }
 

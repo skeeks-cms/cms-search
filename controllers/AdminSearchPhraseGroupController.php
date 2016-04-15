@@ -28,7 +28,7 @@ class AdminSearchPhraseGroupController extends AdminController
 {
     public function init()
     {
-        $this->name                     = "РџРѕРёСЃРєРѕРІС‹Рµ С„СЂР°Р·С‹";
+        $this->name                     = \Yii::t('skeeks/search',"Jump list");
 
         parent::init();
     }
@@ -43,9 +43,9 @@ class AdminSearchPhraseGroupController extends AdminController
                 'index' =>
                 [
                     'class'         => AdminAction::className(),
-                    'name'          => 'РЎРїРёСЃРѕРє',
                     "icon"          => "glyphicon glyphicon-th-list",
                     "priority"      => 0,
+                    "name"          => \Yii::t('app', 'List'),
                 ],
             ]
         );

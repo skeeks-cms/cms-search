@@ -19,7 +19,7 @@ return
                 [
                     [
                         "label" => \Yii::t('app', "Settings"),
-                        "url"   => ["cms/admin-settings", "component" => 'skeeks\cms\components\CmsSearchComponent'],
+                        "url"   => ["cms/admin-settings", "component" => 'skeeks\cms\search\CmsSearchComponent'],
                         "img"       => ['\skeeks\cms\modules\admin\assets\AdminAsset', 'images/icons/settings-big.png'],
                         "activeCallback"       => function(\skeeks\cms\modules\admin\helpers\AdminMenuItem $adminMenuItem)
                         {
@@ -28,18 +28,18 @@ return
                     ],
 
                     [
-                        "label"     => \Yii::t('app',"Statistic"),
+                        "label"     => \Yii::t('skeeks/search',"Statistic"),
                         "img"       => ['\skeeks\cms\search\assets\CmsSearchAsset', 'icons/statistics.png'],
 
                         'items' =>
                         [
                             [
-                                "label" => \Yii::t('app',"Jump list"),
+                                "label" => \Yii::t('skeeks/search',"Jump list"),
                                 "url"   => ["cmsSearch/admin-search-phrase"],
                             ],
 
                             [
-                                "label" => \Yii::t('app',"Phrase list"),
+                                "label" => \Yii::t('skeeks/search',"Phrase list"),
                                 "url"   => ["cmsSearch/admin-search-phrase-group"],
                             ],
                         ],

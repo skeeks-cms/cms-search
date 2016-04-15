@@ -8,7 +8,6 @@ return [
         ],
 
         'i18n' => [
-            'class'     => 'skeeks\cms\search\CmsSearchComponent',
             'translations' =>
             [
                 'skeeks/search' => [

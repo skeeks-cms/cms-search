@@ -44,19 +44,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     static public function descriptorConfig()
     {
         return array_merge(parent::descriptorConfig(), [
-            'name'          => 'Поиск',
+            'name'          => \Yii::t('skeeks/search', 'Searching'),
         ]);
-    }
-
-    /**
-     * Файл с формой настроек, по умолчанию
-     *
-     * @return string
-     */
-    public function getConfigFormFile()
-    {
-        $class = new \ReflectionClass($this->className());
-        return dirname($class->getFileName()) . DIRECTORY_SEPARATOR . 'CmsSearchComponent/_form.php';
     }
 
     public $searchElementContentIds = [];
@@ -67,8 +56,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         'description_short',
         'name',
     ];
-    public $enabledElementProperties              = Cms::BOOL_Y;
-    public $enabledElementPropertiesSearchable    = Cms::BOOL_Y;
+    public $enabledElementProperties              = 'Y';
+    public $enabledElementPropertiesSearchable    = 'Y';
 
     public $searchQueryParamName = "q";
 
