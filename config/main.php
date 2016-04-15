@@ -19,6 +19,12 @@ return [
                 ]
             ]
         ],
+
+        /*'urlManager' => [
+            'rules' => [
+                'search'                                => 'cmsSearch/result',
+            ]
+        ]*/
     ],
 
     'modules' =>
