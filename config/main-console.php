@@ -5,6 +5,9 @@ return [
     [
         'cmsSearch' => [
             'class'     => 'skeeks\cms\search\CmsSearchComponent',
+        ],
+
+        'i18n' => [
             'translations' =>
             [
                 'skeeks/search' => [
