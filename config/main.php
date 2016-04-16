@@ -22,7 +22,7 @@ return [
 
         /*'urlManager' => [
             'rules' => [
-                'search'                                => 'cmsSearch/result',
+                'search'                                => 'cmsSearch/result/index',
             ]
         ]*/
     ],
