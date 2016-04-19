@@ -10,7 +10,7 @@ namespace skeeks\cms\search;
  * Class CmsSearchModule
  * @package skeeks\cms\search
  */
-class CmsSearchModule extends \skeeks\cms\base\Module
+class CmsSearchModule extends \yii\base\Module
 {
     public $controllerNamespace = 'skeeks\cms\search\controllers';
 }
