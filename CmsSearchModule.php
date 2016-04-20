@@ -6,6 +6,7 @@
  * @date 15.04.2016
  */
 namespace skeeks\cms\search;
+
 /**
  * Class CmsSearchModule
  * @package skeeks\cms\search
