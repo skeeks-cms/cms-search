@@ -16,18 +16,23 @@ use yii\console\Controller;
  */
 class ClearController extends Controller
 {
+    public $defaultAction = 'phrase';
     /**
      * Remove old searches
      */
     public function actionPhrase()
     {
+        $this->stdout('phraseLiveTime: ' . \Yii::$app->cmsSearch->phraseLiveTime . "\n");
+
         if (\Yii::$app->cmsSearch->phraseLiveTime)
         {
             $deleted = CmsSearchPhrase::deleteAll([
                 '<=', 'created_at', \Yii::$app->formatter->asTimestamp(time()) - (int) \Yii::$app->cmsSearch->phraseLiveTime
             ]);
 
-            \Yii::info(\Yii::t('skeeks/search', 'Removing searches') . " :" . $deleted, 'skeeks/search');
+            $message = \Yii::t('skeeks/search', 'Removing searches') . " :" . $deleted;
+            \Yii::info($message, 'skeeks/search');
+            $this->stdout("\t" . $message . "\n");
         }
     }
 
