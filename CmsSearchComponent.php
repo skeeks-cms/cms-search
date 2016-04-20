@@ -9,6 +9,7 @@ namespace skeeks\cms\search;
 use skeeks\cms\assets\CmsToolbarAsset;
 use skeeks\cms\assets\CmsToolbarAssets;
 use skeeks\cms\assets\CmsToolbarFancyboxAsset;
+use skeeks\cms\components\Cms;
 use skeeks\cms\helpers\UrlHelper;
 use skeeks\cms\models\CmsContent;
 use skeeks\cms\models\CmsContentElement;

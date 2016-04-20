@@ -32,7 +32,7 @@
 
             <?= \skeeks\cms\cmsWidgets\contentElements\ContentElementsCmsWidget::widget([
                 'namespace'                     => 'ContentElementsCmsWidget-search-result',
-                'viewFile'                      => '@skeeks/cms/views/search/_widget',
+                'viewFile'                      => '@skeeks/cms/search/views/result/_widget',
                 'enabledCurrentTree'            => \skeeks\cms\components\Cms::BOOL_N,
                 'dataProviderCallback'           => function(\yii\data\ActiveDataProvider $dataProvider)
                 {

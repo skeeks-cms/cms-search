@@ -96,7 +96,7 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
                 return null;
             }],
 
-            ['ip', 'default', 'value' => \skeeks\cms\helpers\Request::getRealUserIp()],
+            ['ip', 'default', 'value' => \Yii::$app->request->userIP],
         ]);
     }
 
