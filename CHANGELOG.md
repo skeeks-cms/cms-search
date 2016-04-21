@@ -4,6 +4,7 @@ CHANGELOG
 1.0.0-beta
 -----------------
   * All translated
+  * Url Manager is enabled by default
 
 1.0.0-alpha2
 -----------------
