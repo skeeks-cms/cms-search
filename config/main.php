@@ -20,11 +20,11 @@ return [
             ]
         ],
 
-        /*'urlManager' => [
+        'urlManager' => [
             'rules' => [
                 'search'                                => 'cmsSearch/result/index',
             ]
-        ]*/
+        ]
     ],
 
     'modules' =>
