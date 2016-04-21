@@ -1,7 +1,11 @@
 CHANGELOG
 ==============
 
-1.0.0.pre
+1.0.0-beta
+-----------------
+  * All translated
+
+1.0.0-alpha2
 -----------------
   * Removed skeeks/cms/base/Module
   * Added default templates
