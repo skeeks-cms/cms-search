@@ -45,7 +45,7 @@ class AdminSearchPhraseGroupController extends AdminController
                     'class'         => AdminAction::className(),
                     "icon"          => "glyphicon glyphicon-th-list",
                     "priority"      => 0,
-                    "name"          => \Yii::t('app', 'List'),
+                    "name"          => \Yii::t('skeeks/search', 'List'),
                 ],
             ]
         );

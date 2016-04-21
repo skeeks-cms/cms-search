@@ -18,7 +18,7 @@ return
                 'items' =>
                 [
                     [
-                        "label" => \Yii::t('app', "Settings"),
+                        "label" => \Yii::t('skeeks/search', "Settings"),
                         "url"   => ["cms/admin-settings", "component" => 'skeeks\cms\search\CmsSearchComponent'],
                         "img"       => ['\skeeks\cms\modules\admin\assets\AdminAsset', 'images/icons/settings-big.png'],
                         "activeCallback"       => function(\skeeks\cms\modules\admin\helpers\AdminMenuItem $adminMenuItem)
