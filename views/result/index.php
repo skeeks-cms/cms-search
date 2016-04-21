@@ -17,9 +17,9 @@
     <div class="container">
         <form action="/search" method="get" data-pjax="true">
             <div class="input-group animated fadeInDown">
-                <input type="text" name="<?= \Yii::$app->cmsSearch->searchQueryParamName; ?>" class="form-control" placeholder="<?=\Yii::t('app','Searching')?>" value="<?= \Yii::$app->cmsSearch->searchQuery; ?>">
+                <input type="text" name="<?= \Yii::$app->cmsSearch->searchQueryParamName; ?>" class="form-control" placeholder="<?=\Yii::t('skeeks/search','Searching')?>" value="<?= \Yii::$app->cmsSearch->searchQuery; ?>">
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" onclick="$('.search-open form').submit(); return false;"><?=\Yii::t('app','Search')?></button>
+                    <button class="btn btn-primary" type="button" onclick="$('.search-open form').submit(); return false;"><?=\Yii::t('skeeks/search','Search')?></button>
                 </span>
             </div>
         </form>

@@ -80,29 +80,29 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     public function attributeLabels()
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
-            'searchQueryParamName'                  => 'Параметр поискового запроса в адресной строке',
-            'searchElementFields'                   => 'Основной набор полей элементов, по которым производить поиск',
-            'enabledElementProperties'              => 'Искать среди дополнительных полей элементов',
-            'enabledElementPropertiesSearchable'    => 'Учитывать настройки дополнительных полей при поиске по ним',
-            'searchElementContentIds'               => 'Искать элементы контента следующих типов',
-            'phraseLiveTime'                        => 'Время хранения поисковых запросов',
+            'searchQueryParamName'                  => \Yii::t('skeeks/search','Setting the search query in the address bar'),
+            'searchElementFields'                   => \Yii::t('skeeks/search','The main elements of a set of fields on which to search'),
+            'enabledElementProperties'              => \Yii::t('skeeks/search','Search among items of additional fields'),
+            'enabledElementPropertiesSearchable'    => \Yii::t('skeeks/search','Consider the setting of additional fields in the search for him'),
+            'searchElementContentIds'               => \Yii::t('skeeks/search','Search for content items of the following types'),
+            'phraseLiveTime'                        => \Yii::t('skeeks/search','Time storage searches'),
         ]);
     }
 
     public function attributeHints()
     {
         return ArrayHelper::merge(parent::attributeHints(), [
-            'searchQueryParamName'              => 'Название параметра для адресной строки',
-            'phraseLiveTime'                    => 'Если указано 0 то поисковые запросы не будут удалятся никогда',
-            'enabledElementProperties'          => 'Включая эту опцию, поиск начнет учитывать дополнительные поля элементов',
-            'enabledElementPropertiesSearchable'=> 'Каждое дополнительное свойство имеет свои настройки. Эта опция включит поиск не по всем дополнительным свойствам, а только с включеной опцией "Значения свойства участвуют в поиске"',
+            'searchQueryParamName'              => \Yii::t('skeeks/search','Parameter name for the address bar'),
+            'phraseLiveTime'                    => \Yii::t('skeeks/search','If you specify 0, the searches will not be deleted ever'),
+            'enabledElementProperties'          => \Yii::t('skeeks/search','Including this option, the search begins to take into account the additional elements of the field'),
+            'enabledElementPropertiesSearchable'=> \Yii::t('skeeks/search','Each additional feature is its customization. This option will include a search not for any additional properties, but only with the option "Property values are involved in the search for"'),
         ]);
     }
 
 
     public function renderConfigForm(ActiveForm $form)
     {
-        echo $form->fieldSet(\Yii::t('app', 'Main'));
+        echo $form->fieldSet(\Yii::t('skeeks/search', 'Main'));
 
             echo $form->field($this, 'searchQueryParamName');
             echo $form->fieldInputInt($this, 'phraseLiveTime');
@@ -110,7 +110,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         echo $form->fieldSetEnd();
 
 
-        echo $form->fieldSet('Поиск элементов');
+        echo $form->fieldSet(\Yii::t('skeeks/search', 'Finding Items'));
 
             echo $form->fieldSelectMulti($this, 'searchElementContentIds', CmsContent::getDataForSelect() );
             echo $form->fieldSelectMulti($this, 'searchElementFields', (new \skeeks\cms\models\CmsContentElement())->attributeLabels() );
@@ -119,8 +119,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
 
         echo $form->fieldSetEnd();
 
-        echo $form->fieldSet('Поиск разделов');
-            echo 'В разработке';
+        echo $form->fieldSet(\Yii::t('skeeks/search','Search sections'));
+            echo \Yii::t('skeeks/search','In developing');
         echo $form->fieldSetEnd();
     }
 
