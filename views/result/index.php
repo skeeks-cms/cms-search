@@ -11,7 +11,6 @@
 <?/*= $this->render('@template/include/breadcrumbs', [
     'title' => "Результаты поиска: " . \Yii::$app->cmsSearch->searchQuery
 ])*/?>
-
 <? \skeeks\cms\modules\admin\widgets\Pjax::begin(); ?>
 
     <div class="container">
