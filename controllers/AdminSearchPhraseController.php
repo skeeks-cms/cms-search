@@ -41,12 +41,12 @@ class AdminSearchPhraseController extends AdminModelEditorController
             [
                 'create' =>
                 [
-                    'visible' => false
+                    'isVisible' => false
                 ],
 
                 'update' =>
                 [
-                    'visible' => false
+                    'isVisible' => false
                 ],
 
                 'index' =>
