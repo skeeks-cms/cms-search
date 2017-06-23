@@ -155,7 +155,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
 
                 $where[] = ['and',
                     ['like', CmsContentElementProperty::tableName() . ".value", '%' . $this->searchQuery . '%', false],
-                    [CmsContentProperty::tableName() . ".searchable" => Cms::BOOL_Y]
+                    //[CmsContentProperty::tableName() . ".searchable" => Cms::BOOL_Y]
                 ];
             } else
             {

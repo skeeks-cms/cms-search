@@ -1,6 +1,10 @@
 CHANGELOG
 ==============
 
+2.0.0-alpha1
+-----------------
+  * SkeekS CMS v4
+  
 2.0.0-alpha
 -----------------
   * SkeekS CMS v4
