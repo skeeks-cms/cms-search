@@ -23,5 +23,5 @@
     'itemOptions' => [
         'tag' => false
     ],
-    'layout'            => "\n{items}{$summary}\n<p class=\"row\">{pager}</p>"
+    'layout'            => "\n{items}{summary}\n<p class=\"row\">{pager}</p>"
 ])?>
