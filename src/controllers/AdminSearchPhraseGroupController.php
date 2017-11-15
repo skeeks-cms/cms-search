@@ -5,6 +5,7 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 15.04.2016
  */
+
 namespace skeeks\cms\search\controllers;
 
 use skeeks\cms\components\Cms;
@@ -28,7 +29,7 @@ class AdminSearchPhraseGroupController extends AdminController
 {
     public function init()
     {
-        $this->name                     = \Yii::t('skeeks/search',"Jump list");
+        $this->name = \Yii::t('skeeks/search', "Jump list");
 
         parent::init();
     }
@@ -41,12 +42,12 @@ class AdminSearchPhraseGroupController extends AdminController
         return ArrayHelper::merge(parent::actions(),
             [
                 'index' =>
-                [
-                    'class'         => AdminAction::className(),
-                    "icon"          => "glyphicon glyphicon-th-list",
-                    "priority"      => 0,
-                    "name"          => \Yii::t('skeeks/search', 'List'),
-                ],
+                    [
+                        'class' => AdminAction::className(),
+                        "icon" => "glyphicon glyphicon-th-list",
+                        "priority" => 0,
+                        "name" => \Yii::t('skeeks/search', 'List'),
+                    ],
             ]
         );
     }

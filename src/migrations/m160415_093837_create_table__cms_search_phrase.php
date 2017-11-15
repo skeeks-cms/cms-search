@@ -1,14 +1,15 @@
 <?php
+
 use yii\base\InvalidConfigException;
 use yii\db\Migration;
 use yii\db\Schema;
+
 class m160415_093837_create_table__cms_search_phrase extends Migration
 {
     public function safeUp()
     {
         $tableExist = $this->db->getTableSchema("{{%cms_search_phrase}}", true);
-        if ($tableExist)
-        {
+        if ($tableExist) {
             return true;
         }
 
@@ -18,27 +19,27 @@ class m160415_093837_create_table__cms_search_phrase extends Migration
         }
 
         $this->createTable("{{%cms_search_phrase}}", [
-            'id'                    => $this->primaryKey(),
+            'id' => $this->primaryKey(),
 
-            'created_by'            => $this->integer(),
-            'updated_by'            => $this->integer(),
+            'created_by' => $this->integer(),
+            'updated_by' => $this->integer(),
 
-            'created_at'            => $this->integer(),
-            'updated_at'            => $this->integer(),
+            'created_at' => $this->integer(),
+            'updated_at' => $this->integer(),
 
-            'phrase'                => $this->string(255),
+            'phrase' => $this->string(255),
 
-            'result_count'          => $this->integer()->notNull()->defaultValue(0),
-            'pages'                 => $this->integer()->notNull()->defaultValue(0),
+            'result_count' => $this->integer()->notNull()->defaultValue(0),
+            'pages' => $this->integer()->notNull()->defaultValue(0),
 
-            'ip'                    => $this->string(32),
-            'session_id'            => $this->string(32),
-            'site_code'             => "CHAR(15) NULL",
+            'ip' => $this->string(32),
+            'session_id' => $this->string(32),
+            'site_code' => "CHAR(15) NULL",
 
-            'data_server'           => $this->text(),
-            'data_session'          => $this->text(),
-            'data_cookie'           => $this->text(),
-            'data_request'          => $this->text(),
+            'data_server' => $this->text(),
+            'data_session' => $this->text(),
+            'data_cookie' => $this->text(),
+            'data_request' => $this->text(),
 
         ], $tableOptions);
 

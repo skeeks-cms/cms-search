@@ -5,7 +5,9 @@
  * @copyright 2010 SkeekS (СкикС)
  * @date 19.03.2015
  */
+
 namespace skeeks\cms\search;
+
 use skeeks\cms\assets\CmsToolbarAsset;
 use skeeks\cms\assets\CmsToolbarAssets;
 use skeeks\cms\assets\CmsToolbarFancyboxAsset;
@@ -45,20 +47,20 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     static public function descriptorConfig()
     {
         return array_merge(parent::descriptorConfig(), [
-            'name'          => \Yii::t('skeeks/search', 'Searching'),
+            'name' => \Yii::t('skeeks/search', 'Searching'),
         ]);
     }
 
     public $searchElementContentIds = [];
 
     public $searchElementFields =
-    [
-        'description_full',
-        'description_short',
-        'name',
-    ];
-    public $enabledElementProperties              = 'Y';
-    public $enabledElementPropertiesSearchable    = 'Y';
+        [
+            'description_full',
+            'description_short',
+            'name',
+        ];
+    public $enabledElementProperties = 'Y';
+    public $enabledElementPropertiesSearchable = 'Y';
 
     public $searchQueryParamName = "q";
 
@@ -80,22 +82,26 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     public function attributeLabels()
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
-            'searchQueryParamName'                  => \Yii::t('skeeks/search','Setting the search query in the address bar'),
-            'searchElementFields'                   => \Yii::t('skeeks/search','The main elements of a set of fields on which to search'),
-            'enabledElementProperties'              => \Yii::t('skeeks/search','Search among items of additional fields'),
-            'enabledElementPropertiesSearchable'    => \Yii::t('skeeks/search','Consider the setting of additional fields in the search for him'),
-            'searchElementContentIds'               => \Yii::t('skeeks/search','Search for content items of the following types'),
-            'phraseLiveTime'                        => \Yii::t('skeeks/search','Time storage searches'),
+            'searchQueryParamName' => \Yii::t('skeeks/search', 'Setting the search query in the address bar'),
+            'searchElementFields' => \Yii::t('skeeks/search',
+                'The main elements of a set of fields on which to search'),
+            'enabledElementProperties' => \Yii::t('skeeks/search', 'Search among items of additional fields'),
+            'enabledElementPropertiesSearchable' => \Yii::t('skeeks/search',
+                'Consider the setting of additional fields in the search for him'),
+            'searchElementContentIds' => \Yii::t('skeeks/search', 'Search for content items of the following types'),
+            'phraseLiveTime' => \Yii::t('skeeks/search', 'Time storage searches'),
         ]);
     }
 
     public function attributeHints()
     {
         return ArrayHelper::merge(parent::attributeHints(), [
-            'searchQueryParamName'              => \Yii::t('skeeks/search','Parameter name for the address bar'),
-            'phraseLiveTime'                    => \Yii::t('skeeks/search','If you specify 0, the searches will not be deleted ever'),
-            'enabledElementProperties'          => \Yii::t('skeeks/search','Including this option, the search begins to take into account the additional elements of the field'),
-            'enabledElementPropertiesSearchable'=> \Yii::t('skeeks/search','Each additional feature is its customization. This option will include a search not for any additional properties, but only with the option "Property values are involved in the search for"'),
+            'searchQueryParamName' => \Yii::t('skeeks/search', 'Parameter name for the address bar'),
+            'phraseLiveTime' => \Yii::t('skeeks/search', 'If you specify 0, the searches will not be deleted ever'),
+            'enabledElementProperties' => \Yii::t('skeeks/search',
+                'Including this option, the search begins to take into account the additional elements of the field'),
+            'enabledElementPropertiesSearchable' => \Yii::t('skeeks/search',
+                'Each additional feature is its customization. This option will include a search not for any additional properties, but only with the option "Property values are involved in the search for"'),
         ]);
     }
 
@@ -104,23 +110,24 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     {
         echo $form->fieldSet(\Yii::t('skeeks/search', 'Main'));
 
-            echo $form->field($this, 'searchQueryParamName');
-            echo $form->fieldInputInt($this, 'phraseLiveTime');
+        echo $form->field($this, 'searchQueryParamName');
+        echo $form->fieldInputInt($this, 'phraseLiveTime');
 
         echo $form->fieldSetEnd();
 
 
         echo $form->fieldSet(\Yii::t('skeeks/search', 'Finding Items'));
 
-            echo $form->fieldSelectMulti($this, 'searchElementContentIds', CmsContent::getDataForSelect() );
-            echo $form->fieldSelectMulti($this, 'searchElementFields', (new \skeeks\cms\models\CmsContentElement())->attributeLabels() );
-            echo $form->fieldRadioListBoolean($this, 'enabledElementProperties');
-            echo $form->fieldRadioListBoolean($this, 'enabledElementPropertiesSearchable');
+        echo $form->fieldSelectMulti($this, 'searchElementContentIds', CmsContent::getDataForSelect());
+        echo $form->fieldSelectMulti($this, 'searchElementFields',
+            (new \skeeks\cms\models\CmsContentElement())->attributeLabels());
+        echo $form->fieldRadioListBoolean($this, 'enabledElementProperties');
+        echo $form->fieldRadioListBoolean($this, 'enabledElementPropertiesSearchable');
 
         echo $form->fieldSetEnd();
 
-        echo $form->fieldSet(\Yii::t('skeeks/search','Search sections'));
-            echo \Yii::t('skeeks/search','In developing');
+        echo $form->fieldSet(\Yii::t('skeeks/search', 'Search sections'));
+        echo \Yii::t('skeeks/search', 'In developing');
         echo $form->fieldSetEnd();
     }
 
@@ -129,7 +136,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
      */
     public function getSearchQuery()
     {
-        return (string) \Yii::$app->request->get($this->searchQueryParamName);
+        return (string)\Yii::$app->request->get($this->searchQueryParamName);
     }
 
     /**
@@ -144,45 +151,49 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         $where = [];
 
         //Нужно учитывать связанные дополнительные данные
-        if ($this->enabledElementProperties == Cms::BOOL_Y)
-        {
+        if ($this->enabledElementProperties == Cms::BOOL_Y) {
             $activeQuery->joinWith('cmsContentElementProperties');
 
             //Нужно учитывать настройки связанные дополнительные данных
-            if ($this->enabledElementPropertiesSearchable == Cms::BOOL_Y)
-            {
+            if ($this->enabledElementPropertiesSearchable == Cms::BOOL_Y) {
                 $activeQuery->joinWith('cmsContentElementProperties.property');
 
-                $where[] = ['and',
+                $where[] = [
+                    'and',
                     ['like', CmsContentElementProperty::tableName() . ".value", '%' . $this->searchQuery . '%', false],
                     //[CmsContentProperty::tableName() . ".searchable" => Cms::BOOL_Y]
                 ];
-            } else
-            {
-                $where[] = ['like', CmsContentElementProperty::tableName() . ".value", '%' . $this->searchQuery . '%', false];
+            } else {
+                $where[] = [
+                    'like',
+                    CmsContentElementProperty::tableName() . ".value",
+                    '%' . $this->searchQuery . '%',
+                    false
+                ];
             }
         }
 
         //Поиск по основному набору полей
-        if ($this->searchElementFields)
-        {
-            foreach ($this->searchElementFields as $fieldName)
-            {
-                $where[] = ['like', CmsContentElement::tableName() . "." . $fieldName, '%' . $this->searchQuery . '%', false];
+        if ($this->searchElementFields) {
+            foreach ($this->searchElementFields as $fieldName) {
+                $where[] = [
+                    'like',
+                    CmsContentElement::tableName() . "." . $fieldName,
+                    '%' . $this->searchQuery . '%',
+                    false
+                ];
             }
         }
 
-        if ($where)
-        {
+        if ($where) {
             $where = array_merge(['or'], $where);
             $activeQuery->andWhere($where);
         }
 
         //Отфильтровать только конкретный тип
-        if ($this->searchElementContentIds)
-        {
+        if ($this->searchElementContentIds) {
             $activeQuery->andWhere([
-                CmsContentElement::tableName() . ".content_id" => (array) $this->searchElementContentIds
+                CmsContentElement::tableName() . ".content_id" => (array)$this->searchElementContentIds
             ]);
         }
 
@@ -196,15 +207,14 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     {
         $pages = 1;
 
-        if ($dataProvider->totalCount > $dataProvider->pagination->pageSize)
-        {
+        if ($dataProvider->totalCount > $dataProvider->pagination->pageSize) {
             $pages = round($dataProvider->totalCount / $dataProvider->pagination->pageSize);
         }
 
         $searchPhrase = new \skeeks\cms\search\models\CmsSearchPhrase([
-            'phrase'        => $this->searchQuery,
-            'result_count'  => $dataProvider->totalCount,
-            'pages'         => $pages,
+            'phrase' => $this->searchQuery,
+            'result_count' => $dataProvider->totalCount,
+            'pages' => $pages,
         ]);
 
         $searchPhrase->save();

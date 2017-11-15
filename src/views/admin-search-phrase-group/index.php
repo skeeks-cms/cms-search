@@ -10,7 +10,7 @@
 ?>
 
 <?= \skeeks\cms\modules\admin\widgets\GridView::widget([
-    'dataProvider'          => new \yii\data\ActiveDataProvider([
+    'dataProvider' => new \yii\data\ActiveDataProvider([
         'query' =>
             (new \yii\db\Query())
                 ->select(['id', 'phrase', 'count(*) as count'])
@@ -18,18 +18,18 @@
                 ->groupBy(['phrase'])
                 ->orderBy(['count' => SORT_DESC])
     ]),
-    'columns'               =>
-    [
+    'columns' =>
         [
-            'attribute' => 'phrase',
-            'label'     => \Yii::t('skeeks/search','Search Phrase'),
-        ],
+            [
+                'attribute' => 'phrase',
+                'label' => \Yii::t('skeeks/search', 'Search Phrase'),
+            ],
 
-        [
-            'attribute' => 'count',
-            'label'     => \Yii::t('skeeks/search','The number of requests'),
-        ],
-    ]
+            [
+                'attribute' => 'count',
+                'label' => \Yii::t('skeeks/search', 'The number of requests'),
+            ],
+        ]
 ]); ?><!--
 
 -->

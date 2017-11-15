@@ -2,9 +2,10 @@
 /**
  * @author Semenov Alexander <semenov@skeeks.com>
  * @link http://skeeks.com/
- * @copyright 2010 SkeekS (ÑêèêÑ)
+ * @copyright 2010 SkeekS (ï¿½ï¿½ï¿½ï¿½ï¿½)
  * @date 15.04.2016
  */
+
 namespace skeeks\cms\search\models;
 
 use skeeks\cms\models\behaviors\Serialize;
@@ -52,10 +53,10 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
         return array_merge(parent::behaviors(), [
 
             Serialize::className() =>
-            [
-                'class' => Serialize::className(),
-                'fields' => ['data_server', 'data_session', 'data_cookie', 'data_request']
-            ],
+                [
+                    'class' => Serialize::className(),
+                    'fields' => ['data_server', 'data_session', 'data_cookie', 'data_request']
+                ],
 
         ]);
     }
@@ -75,26 +76,34 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
             ['data_request', 'default', 'value' => $_REQUEST],
             ['data_server', 'default', 'value' => $_SERVER],
             ['data_cookie', 'default', 'value' => $_COOKIE],
-            ['data_session', 'default', 'value' => function(self $model, $attribute)
-            {
-                \Yii::$app->session->open();
-                return $_SESSION;
-            }],
-            ['session_id', 'default', 'value' => function(self $model, $attribute)
-            {
-                \Yii::$app->session->open();
-                return \Yii::$app->session->id;
-            }],
-
-            [['site_code'], 'default', 'value' => function(self $model, $attribute)
-            {
-                if (\Yii::$app->cms->site)
-                {
-                    return \Yii::$app->cms->site->code;
+            [
+                'data_session',
+                'default',
+                'value' => function (self $model, $attribute) {
+                    \Yii::$app->session->open();
+                    return $_SESSION;
                 }
+            ],
+            [
+                'session_id',
+                'default',
+                'value' => function (self $model, $attribute) {
+                    \Yii::$app->session->open();
+                    return \Yii::$app->session->id;
+                }
+            ],
 
-                return null;
-            }],
+            [
+                ['site_code'],
+                'default',
+                'value' => function (self $model, $attribute) {
+                    if (\Yii::$app->cms->site) {
+                        return \Yii::$app->cms->site->code;
+                    }
+
+                    return null;
+                }
+            ],
 
             ['ip', 'default', 'value' => \Yii::$app->request->userIP],
         ]);
