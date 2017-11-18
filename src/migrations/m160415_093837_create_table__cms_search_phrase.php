@@ -43,19 +43,18 @@ class m160415_093837_create_table__cms_search_phrase extends Migration
 
         ], $tableOptions);
 
-        $this->createIndex('updated_by', '{{%cms_search_phrase}}', 'updated_by');
-        $this->createIndex('created_by', '{{%cms_search_phrase}}', 'created_by');
-        $this->createIndex('created_at', '{{%cms_search_phrase}}', 'created_at');
-        $this->createIndex('updated_at', '{{%cms_search_phrase}}', 'updated_at');
+        $this->createIndex('cms_search_phrase__updated_by', '{{%cms_search_phrase}}', 'updated_by');
+        $this->createIndex('cms_search_phrase__created_by', '{{%cms_search_phrase}}', 'created_by');
+        $this->createIndex('cms_search_phrase__created_at', '{{%cms_search_phrase}}', 'created_at');
+        $this->createIndex('cms_search_phrase__updated_at', '{{%cms_search_phrase}}', 'updated_at');
 
-        $this->createIndex('phrase', '{{%cms_search_phrase}}', 'phrase');
-        $this->createIndex('result_count', '{{%cms_search_phrase}}', 'result_count');
-        $this->createIndex('pages', '{{%cms_search_phrase}}', 'pages');
-        $this->createIndex('ip', '{{%cms_search_phrase}}', 'ip');
-        $this->createIndex('session_id', '{{%cms_search_phrase}}', 'session_id');
-        $this->createIndex('site_code', '{{%cms_search_phrase}}', 'site_code');
+        $this->createIndex('cms_search_phrase__phrase', '{{%cms_search_phrase}}', 'phrase');
+        $this->createIndex('cms_search_phrase__result_count', '{{%cms_search_phrase}}', 'result_count');
+        $this->createIndex('cms_search_phrase__pages', '{{%cms_search_phrase}}', 'pages');
+        $this->createIndex('cms_search_phrase__ip', '{{%cms_search_phrase}}', 'ip');
+        $this->createIndex('cms_search_phrase__session_id', '{{%cms_search_phrase}}', 'session_id');
+        $this->createIndex('cms_search_phrase__site_code', '{{%cms_search_phrase}}', 'site_code');
 
-        $this->execute("ALTER TABLE {{%cms_search_phrase}} COMMENT = 'Поисковые фразы';");
 
         $this->addForeignKey(
             'cms_search_phrase_created_by', "{{%cms_search_phrase}}",
