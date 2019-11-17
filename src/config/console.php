@@ -25,5 +25,13 @@ return [
             'class' => 'skeeks\cms\search\CmsSearchModule',
             "controllerNamespace" => 'skeeks\cms\search\console\controllers'
         ]
+    ],
+
+    'controllerMap' => [
+        'migrate' => [
+            'migrationPath' => [
+                '@skeeks/cms/search/migrations',
+            ],
+        ],
     ]
 ];
