@@ -8,22 +8,17 @@
 
 namespace skeeks\cms\search\controllers;
 
-use skeeks\cms\components\Cms;
 use skeeks\cms\grid\CreatedByColumn;
 use skeeks\cms\grid\SiteColumn;
 use skeeks\cms\modules\admin\controllers\AdminModelEditorController;
-use skeeks\cms\modules\admin\traits\AdminModelEditorStandartControllerTrait;
 use skeeks\cms\search\models\CmsSearchPhrase;
 use yii\helpers\ArrayHelper;
 
 /**
- * Class AdminSearchPhraseController
- * @package skeeks\cms\controllers
+ * @author Semenov Alexander <semenov@skeeks.com>
  */
 class AdminSearchPhraseController extends AdminModelEditorController
 {
-    use AdminModelEditorStandartControllerTrait;
-
     public function init()
     {
         $this->name = \Yii::t('skeeks/search', "Jump list");
@@ -42,12 +37,12 @@ class AdminSearchPhraseController extends AdminModelEditorController
             [
                 'create' =>
                     [
-                        'isVisible' => false
+                        'isVisible' => false,
                     ],
 
                 'update' =>
                     [
-                        'isVisible' => false
+                        'isVisible' => false,
                     ],
 
                 'index' =>
@@ -56,21 +51,21 @@ class AdminSearchPhraseController extends AdminModelEditorController
                             'phrase',
 
                             [
-                                'class' => \skeeks\cms\grid\DateTimeColumnData::className(),
-                                'attribute' => "created_at"
+                                'class'     => \skeeks\cms\grid\DateTimeColumnData::className(),
+                                'attribute' => "created_at",
                             ],
 
                             [
-                                'attribute' => "result_count"
+                                'attribute' => "result_count",
                             ],
 
                             [
-                                'attribute' => "pages"
+                                'attribute' => "pages",
                             ],
 
                             [
-                                'class' => SiteColumn::className(),
-                                'visible' => false
+                                'class'   => SiteColumn::className(),
+                                'visible' => false,
                             ],
 
                             [
