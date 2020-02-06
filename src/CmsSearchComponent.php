@@ -106,29 +106,31 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     }
 
 
-    public function renderConfigForm(ActiveForm $form)
+    public function renderConfigFormFields(ActiveForm $form)
     {
-        echo $form->fieldSet(\Yii::t('skeeks/search', 'Main'));
+        $result = $form->fieldSet(\Yii::t('skeeks/search', 'Main'));
 
-        echo $form->field($this, 'searchQueryParamName');
-        echo $form->fieldInputInt($this, 'phraseLiveTime');
+        $result .= $form->field($this, 'searchQueryParamName');
+        $result .= $form->fieldInputInt($this, 'phraseLiveTime');
 
-        echo $form->fieldSetEnd();
+        $result .= $form->fieldSetEnd();
 
 
-        echo $form->fieldSet(\Yii::t('skeeks/search', 'Finding Items'));
+        $result .= $form->fieldSet(\Yii::t('skeeks/search', 'Finding Items'));
 
-        echo $form->fieldSelectMulti($this, 'searchElementContentIds', CmsContent::getDataForSelect());
-        echo $form->fieldSelectMulti($this, 'searchElementFields',
+        $result .= $form->fieldSelectMulti($this, 'searchElementContentIds', CmsContent::getDataForSelect());
+        $result .= $form->fieldSelectMulti($this, 'searchElementFields',
             (new \skeeks\cms\models\CmsContentElement())->attributeLabels());
-        echo $form->fieldRadioListBoolean($this, 'enabledElementProperties');
-        echo $form->fieldRadioListBoolean($this, 'enabledElementPropertiesSearchable');
+        $result .= $form->fieldRadioListBoolean($this, 'enabledElementProperties');
+        $result .= $form->fieldRadioListBoolean($this, 'enabledElementPropertiesSearchable');
 
-        echo $form->fieldSetEnd();
+        $result .= $form->fieldSetEnd();
 
-        echo $form->fieldSet(\Yii::t('skeeks/search', 'Search sections'));
-        echo \Yii::t('skeeks/search', 'In developing');
-        echo $form->fieldSetEnd();
+        $result .= $form->fieldSet(\Yii::t('skeeks/search', 'Search sections'));
+        $result .= \Yii::t('skeeks/search', 'In developing');
+        $result .= $form->fieldSetEnd();
+
+        return $result;
     }
 
     /**
