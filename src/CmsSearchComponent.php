@@ -111,7 +111,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         $result = $form->fieldSet(\Yii::t('skeeks/search', 'Main'));
 
         $result .= $form->field($this, 'searchQueryParamName');
-        $result .= $form->fieldInputInt($this, 'phraseLiveTime');
+        $result .= $form->field($this, 'phraseLiveTime');
 
         $result .= $form->fieldSetEnd();
 
@@ -121,8 +121,14 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         $result .= $form->fieldSelectMulti($this, 'searchElementContentIds', CmsContent::getDataForSelect());
         $result .= $form->fieldSelectMulti($this, 'searchElementFields',
             (new \skeeks\cms\models\CmsContentElement())->attributeLabels());
-        $result .= $form->fieldRadioListBoolean($this, 'enabledElementProperties');
-        $result .= $form->fieldRadioListBoolean($this, 'enabledElementPropertiesSearchable');
+        $result .= $form->field($this, 'enabledElementProperties')->checkbox([
+            'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
+            'value'   => \skeeks\cms\components\Cms::BOOL_Y,
+        ]);
+        $result .= $form->field($this, 'enabledElementPropertiesSearchable')->checkbox([
+            'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
+            'value'   => \skeeks\cms\components\Cms::BOOL_Y,
+        ]);
 
         $result .= $form->fieldSetEnd();
 
