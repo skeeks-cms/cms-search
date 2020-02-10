@@ -17,6 +17,7 @@ use skeeks\cms\models\CmsContent;
 use skeeks\cms\models\CmsContentElement;
 use skeeks\cms\models\CmsContentElementProperty;
 use skeeks\cms\models\CmsContentProperty;
+use skeeks\cms\search\assets\CmsSearchAsset;
 use skeeks\cms\search\models\CmsSearchPhrase;
 use skeeks\cms\modules\admin\controllers\AdminModelEditorController;
 use skeeks\cms\rbac\CmsManager;
@@ -48,6 +49,9 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     {
         return array_merge(parent::descriptorConfig(), [
             'name' => \Yii::t('skeeks/search', 'Searching'),
+            'image' => [
+                CmsSearchAsset::class, 'icons/computer-icons-youtube-location.jpg'
+            ],
         ]);
     }
 
