@@ -202,6 +202,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             $activeQuery->andWhere($where);
         }
 
+        $activeQuery->andWhere(['parent_content_element_id' => null]);
+
         //Отфильтровать только конкретный тип
         if ($this->searchElementContentIds) {
             $activeQuery->andWhere([
