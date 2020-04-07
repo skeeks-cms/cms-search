@@ -26,12 +26,12 @@ use yii\web\Request;
  * @property integer $result_count
  * @property integer $pages
  * @property string $ip
- * @property string $site_code
  * @property string $data_server
  * @property string $data_session
  * @property string $data_cookie
  * @property string $data_request
  * @property string $session_id
+ * @property integer|null $cms_site_id
  *
  * @property CmsSite $site
  */
@@ -71,7 +71,7 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
             [['data_server', 'data_session', 'data_cookie', 'data_request'], 'string'],
             [['phrase'], 'string', 'max' => 255],
             [['ip'], 'string', 'max' => 32],
-            [['site_code'], 'string', 'max' => 15],
+            [['cms_site_id'], 'integer'],
 
             ['data_request', 'default', 'value' => $_REQUEST],
             ['data_server', 'default', 'value' => $_SERVER],
@@ -94,11 +94,11 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
             ],
 
             [
-                ['site_code'],
+                ['cms_site_id'],
                 'default',
                 'value' => function (self $model, $attribute) {
                     if (\Yii::$app->cms->site) {
-                        return \Yii::$app->cms->site->code;
+                        return \Yii::$app->cms->site->id;
                     }
 
                     return null;
@@ -125,7 +125,7 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
             'result_count' => Yii::t('skeeks/search', 'Documents Found'),
             'pages' => Yii::t('skeeks/search', 'Pages Count'),
             'ip' => Yii::t('skeeks/search', 'Ip'),
-            'site_code' => Yii::t('skeeks/search', 'Site'),
+            'cms_site_id' => Yii::t('skeeks/search', 'Site'),
             'data_server' => Yii::t('skeeks/search', 'Data Server'),
             'data_session' => Yii::t('skeeks/search', 'Data Session'),
             'data_cookie' => Yii::t('skeeks/search', 'Data Cookie'),
@@ -138,6 +138,6 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
      */
     public function getSite()
     {
-        return $this->hasOne(CmsSite::className(), ['code' => 'site_code']);
+        return $this->hasOne(CmsSite::className(), ['id' => 'cms_site_id']);
     }
 }
