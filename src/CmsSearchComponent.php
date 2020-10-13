@@ -62,6 +62,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             'description_full',
             'description_short',
             'name',
+            'external_id',
         ];
     public $enabledElementProperties = 'Y';
     public $enabledElementPropertiesSearchable = 'Y';
