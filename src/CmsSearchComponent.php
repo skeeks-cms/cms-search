@@ -138,7 +138,10 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
      */
     public function getSearchQuery()
     {
-        return (string)\Yii::$app->request->get($this->searchQueryParamName);
+        if (!$query = (string)\Yii::$app->request->get($this->searchQueryParamName)) {
+            $query = (string)\Yii::$app->request->post($this->searchQueryParamName);
+        }
+        return $query;
     }
 
     /**
