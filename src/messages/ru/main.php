@@ -33,4 +33,6 @@ return [
     'If you set 0, the searches will not be deleted ever' => 'Если указано 0 то поисковые запросы не будут удалятся никогда',
     'Including this option, the search begins to take into account the additional elements of the field' => 'Включая эту опцию, поиск начнет учитывать дополнительные поля элементов',
     'Each additional feature is its customization. This option will include a search not for any additional properties, but only with the option "Property values are involved in the search for"' => 'Каждое дополнительное свойство имеет свои настройки. Эта опция включит поиск не по всем дополнительным свойствам, а только с включеной опцией "Значения свойства участвуют в поиске"',
+    'Search elements who have parent element' => 'Искать элементы которые имеют родительский элемент',
+    'This option will include a search content child elements' => 'Эта опция включает в результат поиска дочерние элементы контента',
 ];
