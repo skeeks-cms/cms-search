@@ -17,7 +17,7 @@ return
 
                             'items' =>
                                 [
-                                    [
+                                    /*[
                                         "label" => \Yii::t('skeeks/search', "Settings"),
                                         "url" => [
                                             "cms/admin-settings",
@@ -27,7 +27,7 @@ return
                                         "activeCallback" => function ($adminMenuItem) {
                                             return (bool)(\Yii::$app->request->getUrl() == $adminMenuItem->getUrl());
                                         },
-                                    ],
+                                    ],*/
 
                                     [
                                         "label" => \Yii::t('skeeks/search', "Statistic"),
