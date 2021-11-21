@@ -14,7 +14,7 @@
 <? \skeeks\cms\modules\admin\widgets\Pjax::begin(); ?>
 
     <div class="container">
-        <form action="/search" method="get" data-pjax="true">
+        <form action="<?= \yii\helpers\Url::to(['/cmsSearch/result/index']); ?>" method="get" data-pjax="true">
             <div class="input-group animated fadeInDown">
                 <input type="text" name="<?= \Yii::$app->cmsSearch->searchQueryParamName; ?>" class="form-control"
                        placeholder="<?= \Yii::t('skeeks/search', 'Searching') ?>"
