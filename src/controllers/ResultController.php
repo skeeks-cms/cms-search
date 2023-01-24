@@ -14,6 +14,8 @@ use skeeks\cms\search\models\CmsContentElement;
 use skeeks\cms\search\models\CmsSearchPhrase;
 use skeeks\cms\models\Tree;
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\Response;
 
 /**
@@ -27,6 +29,11 @@ class ResultController extends Controller
      */
     public function actionIndex()
     {
+        /*\Yii::$app->seo->canUrlEnableDefaultControllers = ArrayHelper::merge(\Yii::$app->seo->canUrlEnableDefaultControllers, [
+            'cmsSearch/result'
+        ]);*/
+
+
         $searchQuery = \Yii::$app->cmsSearch->searchQuery;
         $this->view->title = StringHelper::ucfirst($searchQuery) . " — результаты поиска";
 

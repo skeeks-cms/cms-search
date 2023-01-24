@@ -80,7 +80,7 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
                 'data_session',
                 'default',
                 'value' => function (self $model, $attribute) {
-                    \Yii::$app->session->open();
+                    //\Yii::$app->session->open();
                     return $_SESSION;
                 }
             ],
@@ -88,8 +88,8 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
                 'session_id',
                 'default',
                 'value' => function (self $model, $attribute) {
-                    \Yii::$app->session->open();
-                    return \Yii::$app->session->id;
+                    //\Yii::$app->session->open();
+                    return (\Yii::$app->session->getHasSessionId() || \Yii::$app->session->getIsActive()) ? \Yii::$app->session->id : null;
                 }
             ],
 

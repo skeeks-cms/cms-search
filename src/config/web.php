@@ -21,8 +21,7 @@ return [
 
         'urlManager' => [
             'rules' => [
-                'search' => 'cmsSearch/result/index',
-                'search/' => 'cmsSearch/result/index',
+                '~search' => 'cmsSearch/result/index',
             ]
         ]
     ],
