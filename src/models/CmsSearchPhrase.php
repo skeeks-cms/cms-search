@@ -81,7 +81,7 @@ class CmsSearchPhrase extends \skeeks\cms\models\Core
                 'default',
                 'value' => function (self $model, $attribute) {
                     //\Yii::$app->session->open();
-                    return $_SESSION;
+                    return @$_SESSION;
                 }
             ],
             [
