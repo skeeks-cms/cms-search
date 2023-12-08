@@ -19,6 +19,7 @@ use skeeks\cms\models\CmsContentPropertyEnum;
 use skeeks\cms\search\assets\CmsSearchAsset;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\web\NotFoundHttpException;
 use yii\widgets\ActiveForm;
 
 /**
@@ -154,6 +155,10 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     public function buildElementsQuery(\yii\db\ActiveQuery $activeQuery)
     {
         $where = [];
+        
+        if (!\Yii::$app->request->referrer) {
+            throw new NotFoundHttpException("Поисковый запрос некорректный");
+        }
 
         $searchQueryArr = explode(" ", $this->searchQuery);
         if ($searchQueryArr) {
