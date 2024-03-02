@@ -142,6 +142,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         if (!$query = (string)\Yii::$app->request->get($this->searchQueryParamName)) {
             $query = (string)\Yii::$app->request->post($this->searchQueryParamName);
         }
+        $query = htmlspecialchars($query, ENT_QUOTES, 'UTF-8');
+
         return $query;
     }
 
