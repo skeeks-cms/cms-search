@@ -39,7 +39,7 @@
                     'enabledCurrentTree' => \skeeks\cms\components\Cms::BOOL_N,
                     'dataProviderCallback' => function (\yii\data\ActiveDataProvider $dataProvider) {
                         \Yii::$app->cmsSearch->buildElementsQuery($dataProvider->query);
-                        \Yii::$app->cmsSearch->logResult($dataProvider);
+                        //\Yii::$app->cmsSearch->logResult($dataProvider);
                     },
                 ]) ?>
 

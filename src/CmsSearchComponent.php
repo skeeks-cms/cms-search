@@ -249,6 +249,9 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
      */
     public function logResult(ActiveDataProvider $dataProvider)
     {
+        //todo:временно отключим
+        return false;
+        
         $pages = 1;
 
         if ($dataProvider->totalCount > $dataProvider->pagination->pageSize) {
