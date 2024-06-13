@@ -109,6 +109,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         ];
     public $enabledElementProperties = 'Y';
     public $enabledElementPropertiesSearchable = 'Y';
+    public $enabledElementParentNotNull = 'N';
 
     public $searchQueryParamName = "q";
 
@@ -124,6 +125,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             [['phraseLiveTime'], 'integer'],
             [['searchElementFields'], 'safe'],
             [['searchElementContentIds'], 'safe'],
+            [['enabledElementParentNotNull'], 'safe'],
         ]);
     }
 
@@ -136,6 +138,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             'enabledElementProperties'           => \Yii::t('skeeks/search', 'Search among items of additional fields'),
             'enabledElementPropertiesSearchable' => \Yii::t('skeeks/search',
                 'Consider the setting of additional fields in the search for him'),
+            'enabledElementParentNotNull' => \Yii::t('skeeks/search',
+                'Search elements who have parent element'),
             'searchElementContentIds'            => \Yii::t('skeeks/search', 'Search for content items of the following types'),
             'phraseLiveTime'                     => \Yii::t('skeeks/search', 'Time storage searches'),
         ]);
@@ -150,6 +154,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
                 'Including this option, the search begins to take into account the additional elements of the field'),
             'enabledElementPropertiesSearchable' => \Yii::t('skeeks/search',
                 'Each additional feature is its customization. This option will include a search not for any additional properties, but only with the option "Property values are involved in the search for"'),
+            'enabledElementParentNotNull' => \Yii::t('skeeks/search',
+                'This option will include a search content child elements'),
         ]);
     }
 
@@ -169,6 +175,10 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         $result .= $form->fieldSelectMulti($this, 'searchElementContentIds', CmsContent::getDataForSelect());
         $result .= $form->fieldSelectMulti($this, 'searchElementFields',
             (new \skeeks\cms\models\CmsContentElement())->attributeLabels());
+        $result .= $form->field($this, 'enabledElementParentNotNull')->checkbox([
+            'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
+            'value'   => \skeeks\cms\components\Cms::BOOL_Y,
+        ]);
         $result .= $form->field($this, 'enabledElementProperties')->checkbox([
             'uncheck' => \skeeks\cms\components\Cms::BOOL_N,
             'value'   => \skeeks\cms\components\Cms::BOOL_Y,
@@ -285,8 +295,10 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             $activeQuery->andWhere($where);
         }
 
-        $activeQuery->andWhere([CmsContentElement::tableName().'.parent_content_element_id' => null]);
-
+        //Нужно учитывать дочерние элементы контента
+        if ($this->enabledElementParentNotNull != Cms::BOOL_Y) {
+            $activeQuery->andWhere([CmsContentElement::tableName().'.parent_content_element_id' => null]);
+        }
         //Отфильтровать только конкретный тип
         if ($this->searchElementContentIds) {
             $activeQuery->andWhere([
