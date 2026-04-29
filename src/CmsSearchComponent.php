@@ -200,6 +200,131 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         return $query;
     }
 
+
+    public function _buildElementsQuery(\yii\db\ActiveQuery $activeQuery)
+{
+    if (!$this->searchQuery) {
+        return $this;
+    }
+
+    // --- 1. Разбивка и нормализация
+    $searchQueryArr = preg_split('/\s+/', $this->searchQuery);
+
+    $searchQueryArr = array_values(array_filter(array_map(function ($value) {
+        $value = trim($value);
+        $value = preg_replace('/[^\p{L}\p{N}]+/u', '', $value);
+        $value = str_replace('х', 'x', mb_strtolower($value));
+
+        if (mb_strlen($value) < 2) {
+            return null;
+        }
+
+        return $value;
+    }, $searchQueryArr)));
+
+    if (!$searchQueryArr) {
+        return $this;
+    }
+
+    // --- 2. JOIN свойств (если нужно)
+    if ($this->enabledElementProperties == Cms::BOOL_Y) {
+        $activeQuery->joinWith('cmsContentElementProperties');
+    }
+
+    // --- 3. SKU (точный поиск)
+    $skuConditions = ['or'];
+    foreach ($searchQueryArr as $value) {
+        $skuConditions[] = ['=', 'shopProduct.brand_sku', $value];
+    }
+
+    // --- 4. МЯГКИЙ текстовый поиск (OR)
+    $textConditions = ['or'];
+
+    foreach ($searchQueryArr as $value) {
+
+        $wordBlock = ['or'];
+
+        // поиск по основным полям
+        if ($this->searchElementFields) {
+            foreach ($this->searchElementFields as $fieldName) {
+                $wordBlock[] = [
+                    'like',
+                    CmsContentElement::tableName() . "." . $fieldName,
+                    $value,
+                    false
+                ];
+            }
+        }
+
+        // поиск по свойствам
+        if ($this->enabledElementProperties == Cms::BOOL_Y) {
+            $wordBlock[] = [
+                'like',
+                CmsContentElementProperty::tableName() . ".value",
+                $value,
+                false
+            ];
+        }
+
+        $textConditions[] = $wordBlock;
+    }
+
+    // --- 5. WHERE (SKU или текст)
+    $activeQuery->andWhere([
+        'or',
+        $skuConditions,
+        $textConditions
+    ]);
+
+    // --- 6. РЕЛЕВАНТНОСТЬ
+    $relevanceParts = [];
+
+    foreach ($searchQueryArr as $value) {
+
+        // SKU — максимальный вес
+        $relevanceParts[] = "IF(shopProduct.brand_sku = '{$value}', 1000, 0)";
+
+        // основные поля
+        if ($this->searchElementFields) {
+            foreach ($this->searchElementFields as $fieldName) {
+                $relevanceParts[] = "IF(" . CmsContentElement::tableName() . ".$fieldName LIKE '%{$value}%', 80, 0)";
+            }
+        }
+
+        // свойства
+        if ($this->enabledElementProperties == Cms::BOOL_Y) {
+            $relevanceParts[] = "IF(" . CmsContentElementProperty::tableName() . ".value LIKE '%{$value}%', 30, 0)";
+        }
+    }
+
+    $relevanceSql = implode(' + ', $relevanceParts);
+
+    // добавляем relevance в SELECT
+    $activeQuery->addSelect([
+        CmsContentElement::tableName() . '.*',
+        "({$relevanceSql}) AS relevance"
+    ]);
+
+    // --- 7. Фильтр по релевантности (вместо HAVING)
+    $activeQuery->andWhere("({$relevanceSql}) > 0");
+
+    // --- 8. Сортировка
+    $activeQuery->orderBy(['relevance' => SORT_DESC]);
+
+    // --- 9. Базовые фильтры
+    $activeQuery->andWhere([
+        CmsContentElement::tableName() . '.parent_content_element_id' => null
+    ]);
+
+    if ($this->searchElementContentIds) {
+        $activeQuery->andWhere([
+            CmsContentElement::tableName() . ".content_id" => (array)$this->searchElementContentIds,
+        ]);
+    }
+
+    return $this;
+}
+
     /**
      * Конфигурирование объекта запроса поиска по элементам.
      *
@@ -215,7 +340,22 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             throw new NotFoundHttpException("Поисковый запрос некорректный");
         }
 
-        $searchQueryArr = explode(" ", $this->searchQuery);
+
+        // 1. Разбиваем строку
+        $searchQueryArr = preg_split('/\s+/', $this->searchQuery);
+
+        // 2. Чистим мусор + нормализация
+        $searchQueryArr = array_values(array_filter(array_map(function ($value) {
+            $value = trim($value);
+            $value = preg_replace('/[^\p{L}\p{N}]+/u', '', $value);
+            $value = str_replace('х', 'x', mb_strtolower($value));
+            return $value;
+        }, $searchQueryArr)));
+
+        if (!$searchQueryArr) {
+            return $this;
+        }
+
         if ($searchQueryArr) {
             foreach ($searchQueryArr as $key => $value) {
                 $value = trim($value);
@@ -280,6 +420,17 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             }
         }
 
+        $tmpWhere = [];
+        foreach ($searchQueryArr as $value) {
+            $tmpWhere[] = [
+                '=',
+                "shopProduct.brand_sku",
+                $value
+            ];
+
+            $where[] = array_merge(['or'], $tmpWhere);
+        }
+
         if ($where) {
             $where = array_merge(['or'], $where);
             $activeQuery->andWhere($where);
@@ -293,6 +444,11 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
                 CmsContentElement::tableName().".content_id" => (array)$this->searchElementContentIds,
             ]);
         }
+
+
+
+        /*print_r($activeQuery->createCommand()->getRawSql());
+        die;*/
 
         return $this;
     }
