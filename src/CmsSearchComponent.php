@@ -62,7 +62,7 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
                 \Yii::$app->cache->set($searchCacheKey, $key, 60*5);
             }
 
-            if (\Yii::$app->controller->uniqueId == "cmsSearch/result") {
+            if (\Yii::$app->controller && \Yii::$app->controller->uniqueId == "cmsSearch/result") {
                   //Проверить куку
                 $cookies = \Yii::$app->request->cookies;
                 $cookieKey = $cookies->getValue($searchCookieKey);
