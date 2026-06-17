@@ -8,6 +8,7 @@
 
 namespace skeeks\cms\search;
 
+use skeeks\cms\assets\CmsAsset;
 use skeeks\cms\assets\CmsToolbarAsset;
 use skeeks\cms\assets\CmsToolbarAssets;
 use skeeks\cms\assets\CmsToolbarFancyboxAsset;
@@ -16,7 +17,6 @@ use skeeks\cms\models\CmsContent;
 use skeeks\cms\models\CmsContentElement;
 use skeeks\cms\models\CmsContentElementProperty;
 use skeeks\cms\models\CmsContentPropertyEnum;
-use skeeks\cms\search\assets\CmsSearchAsset;
 use yii\base\Event;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
@@ -41,8 +41,8 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         return array_merge(parent::descriptorConfig(), [
             'name'  => \Yii::t('skeeks/search', 'Searching'),
             'image' => [
-                CmsSearchAsset::class,
-                'icons/computer-icons-youtube-location.jpg',
+                CmsAsset::class,
+                'images/icons/admin-menu/search.svg',
             ],
         ]);
     }
