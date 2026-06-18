@@ -1,6 +1,10 @@
 CHANGELOG
 ==============
 
+2.1.6
+-----------------
+ * Add to component settings check if ContentElement have parent
+
 2.1.2
 -----------------
  * Support pgsql
