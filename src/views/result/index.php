@@ -74,8 +74,8 @@ $this->registerMetaTag([
                                 width: 46px;
                                 height: 46px;
                                 margin-bottom: 18px;
-                                border: 4px solid rgba(142, 18, 181, 0.16);
-                                border-top-color: #8e12b5;
+                                border: 4px solid color-mix(in srgb, var(--primary-color, #8e12b5) 16%, transparent);
+                                border-top-color: var(--primary-color, #8e12b5);
                                 border-radius: 50%;
                                 animation: sx-search-lazy-spin 0.8s linear infinite;
                             }
