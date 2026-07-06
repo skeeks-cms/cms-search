@@ -283,9 +283,9 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     {
         $where = [];
         
-        if (!\Yii::$app->request->referrer) {
+        /*if (!\Yii::$app->request->referrer) {
             throw new NotFoundHttpException("Поисковый запрос некорректный");
-        }
+        }*/
 
 
         // 1. Разбиваем строку
