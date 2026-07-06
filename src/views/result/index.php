@@ -6,6 +6,12 @@
  * @date 06.03.2015
  */
 /* @var $this \yii\web\View */
+
+$this->registerMetaTag([
+    'name' => 'robots',
+    'content' => 'noindex, nofollow',
+], 'robots');
+\Yii::$app->response->headers->set('X-Robots-Tag', 'noindex, nofollow');
 ?>
 
 <? /*= $this->render('@template/include/breadcrumbs', [
