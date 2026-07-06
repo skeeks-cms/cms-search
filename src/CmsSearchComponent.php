@@ -20,7 +20,6 @@ use skeeks\cms\models\CmsContentPropertyEnum;
 use yii\base\Event;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use yii\web\Application;
 use yii\web\NotFoundHttpException;
 use yii\widgets\ActiveForm;
 
@@ -46,58 +45,6 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             ],
         ]);
     }
-
-
-    public function init()
-    {
-        if (\Yii::$app instanceof Application) {
-            //if (YII_ENV_DEV) {
-
-            //Хитрая защита от спама
-            $searchCookieKey = "_sx_s";
-            $searchCacheKey = "_sx_s";
-
-            if (!$key = \Yii::$app->cache->get($searchCacheKey)) {
-                $key = \Yii::$app->security->generateRandomString(5);
-                \Yii::$app->cache->set($searchCacheKey, $key, 60*5);
-            }
-
-            if (\Yii::$app->controller && \Yii::$app->controller->uniqueId == "cmsSearch/result") {
-                  //Проверить куку
-                $cookies = \Yii::$app->request->cookies;
-                $cookieKey = $cookies->getValue($searchCookieKey);
-                if ($cookieKey != $key) {
-                    throw new NotFoundHttpException();
-                }
-
-            } else {
-
-                //Установить скрытую куку
-
-                $cookieKey = \Yii::$app->request->cookies->getValue($searchCookieKey);
-
-                if (!$cookieKey) {
-                    // добавление новой куки в HTTP-ответ
-                    \Yii::$app->response->cookies->add(new \yii\web\Cookie([
-                        'name' => $searchCookieKey,
-                        'value' => $key,
-                    ]));
-                } else {
-                    if ($cookieKey != $key) {
-
-                        \Yii::$app->response->cookies->add(new \yii\web\Cookie([
-                            'name' => $searchCookieKey,
-                            'value' => $key,
-                        ]));
-                    }
-
-                }
-            }
-            //}
-        }
-        return parent::init();
-    }
-
     public $searchElementContentIds = [];
 
     public $searchElementFields =
