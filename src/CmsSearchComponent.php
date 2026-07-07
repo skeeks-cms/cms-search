@@ -147,6 +147,40 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         return $query;
     }
 
+    /**
+     * @return array
+     */
+    protected function getSearchQueryWords()
+    {
+        $result = [];
+        foreach ((array)preg_split('/\s+/', $this->searchQuery) as $value) {
+            $value = trim($value);
+            if ($value === '') {
+                continue;
+            }
+
+            $value = mb_strtolower($value);
+            $latinValue = str_replace('х', 'x', $value);
+            $normalizedValue = preg_replace('/[^\p{L}\p{N}]+/u', '', $latinValue);
+            $variants = array_values(array_filter(array_unique([
+                $value,
+                $latinValue,
+                $normalizedValue,
+            ])));
+
+            if (!$variants) {
+                continue;
+            }
+
+            $result[] = [
+                'variants' => $variants,
+                'normalized' => $normalizedValue,
+            ];
+        }
+
+        return $result;
+    }
+
 
     public function _buildElementsQuery(\yii\db\ActiveQuery $activeQuery)
 {
@@ -282,85 +316,72 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
     public function buildElementsQuery(\yii\db\ActiveQuery $activeQuery)
     {
         $where = [];
-        
-        /*if (!\Yii::$app->request->referrer) {
-            throw new NotFoundHttpException("Поисковый запрос некорректный");
-        }*/
-
-
-        // 1. Разбиваем строку
-        $searchQueryArr = preg_split('/\s+/', $this->searchQuery);
-
-        // 2. Чистим мусор + нормализация
-        $searchQueryArr = array_values(array_filter(array_map(function ($value) {
-            $value = trim($value);
-            $value = preg_replace('/[^\p{L}\p{N}]+/u', '', $value);
-            $value = str_replace('х', 'x', mb_strtolower($value));
-            return $value;
-        }, $searchQueryArr)));
+        $searchQueryArr = $this->getSearchQueryWords();
 
         if (!$searchQueryArr) {
             return $this;
         }
 
-        if ($searchQueryArr) {
-            foreach ($searchQueryArr as $key => $value) {
-                $value = trim($value);
-                if (!$value) {
-                    unset($searchQueryArr[$key]);
-                } else {
-                    $searchQueryArr[$key] = $value;
-                }
-            }
-        }
-        //Нужно учитывать связанные дополнительные данные
+        $conditionIndex = 0;
+
         if ($this->enabledElementProperties == Cms::BOOL_Y) {
             $activeQuery->joinWith('cmsContentElementProperties');
 
-            //Нужно учитывать настройки связанные дополнительные данных
             if ($this->enabledElementPropertiesSearchable == Cms::BOOL_Y) {
                 $activeQuery->joinWith('cmsContentElementProperties.property');
-                /*$activeQuery->joinWith('cmsContentElementProperties.valueEnum');
-                $activeQuery->joinWith('cmsContentElementProperties.valueElement');*/
+            }
 
-                $tmpWhere = [];
-                foreach ($searchQueryArr as $value) {
-                    $tmpWhere[] = [
-                        'or',
-                        ['like', CmsContentElementProperty::tableName() . ".value", '%'.$value.'%', false],
-                        //['like', CmsContentPropertyEnum::tableName() . ".value", '%'.$value.'%', false],
-                        //[CmsContentProperty::tableName() . ".searchable" => Cms::BOOL_Y]
-                    ];
-                }
-                $where[] = array_merge(['and'], $tmpWhere);
-
-            } else {
-
-                $tmpWhere = [];
-                foreach ($searchQueryArr as $value) {
-                    $tmpWhere[] = [
+            $tmpWhere = [];
+            foreach ($searchQueryArr as $searchWord) {
+                $wordWhere = ['or'];
+                foreach ($searchWord['variants'] as $value) {
+                    $wordWhere[] = [
                         'like',
                         CmsContentElementProperty::tableName().".value",
                         '%'.$value.'%',
                         false,
                     ];
                 }
-                $where[] = array_merge(['and'], $tmpWhere);
 
+                if ($searchWord['normalized']) {
+                    $conditionIndex++;
+                    $paramName = ':sxSearchPropertyNormalized'.$conditionIndex;
+                    $wordWhere[] = new \yii\db\Expression(
+                        "REPLACE(REPLACE(".CmsContentElementProperty::tableName().".value, '-', ''), ' ', '') LIKE {$paramName}",
+                        [$paramName => '%'.$searchWord['normalized'].'%']
+                    );
+                }
+
+                $tmpWhere[] = $wordWhere;
             }
+            $where[] = array_merge(['and'], $tmpWhere);
         }
 
-        //Поиск по основному набору полей
         if ($this->searchElementFields) {
             foreach ($this->searchElementFields as $fieldName) {
                 $tmpWhere = [];
-                foreach ($searchQueryArr as $value) {
-                    $tmpWhere[] = [
-                        'like',
-                        CmsContentElement::tableName().".".$fieldName,
-                        '%'.$value.'%',
-                        false,
-                    ];
+                foreach ($searchQueryArr as $searchWord) {
+                    $columnName = CmsContentElement::tableName().".".$fieldName;
+                    $wordWhere = ['or'];
+                    foreach ($searchWord['variants'] as $value) {
+                        $wordWhere[] = [
+                            'like',
+                            $columnName,
+                            '%'.$value.'%',
+                            false,
+                        ];
+                    }
+
+                    if ($searchWord['normalized']) {
+                        $conditionIndex++;
+                        $paramName = ':sxSearchFieldNormalized'.$conditionIndex;
+                        $wordWhere[] = new \yii\db\Expression(
+                            "REPLACE(REPLACE({$columnName}, '-', ''), ' ', '') LIKE {$paramName}",
+                            [$paramName => '%'.$searchWord['normalized'].'%']
+                        );
+                    }
+
+                    $tmpWhere[] = $wordWhere;
                 }
 
                 $where[] = array_merge(['and'], $tmpWhere);
@@ -368,12 +389,23 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
         }
 
         $tmpWhere = [];
-        foreach ($searchQueryArr as $value) {
-            $tmpWhere[] = [
-                '=',
-                "shopProduct.brand_sku",
-                $value
-            ];
+        foreach ($searchQueryArr as $searchWord) {
+            foreach ($searchWord['variants'] as $value) {
+                $tmpWhere[] = [
+                    '=',
+                    "shopProduct.brand_sku",
+                    $value
+                ];
+            }
+
+            if ($searchWord['normalized']) {
+                $conditionIndex++;
+                $paramName = ':sxSearchSkuNormalized'.$conditionIndex;
+                $tmpWhere[] = new \yii\db\Expression(
+                    "REPLACE(REPLACE(shopProduct.brand_sku, '-', ''), ' ', '') = {$paramName}",
+                    [$paramName => $searchWord['normalized']]
+                );
+            }
 
             $where[] = array_merge(['or'], $tmpWhere);
         }
@@ -385,21 +417,14 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
 
         $activeQuery->andWhere([CmsContentElement::tableName().'.parent_content_element_id' => null]);
 
-        //Отфильтровать только конкретный тип
         if ($this->searchElementContentIds) {
             $activeQuery->andWhere([
                 CmsContentElement::tableName().".content_id" => (array)$this->searchElementContentIds,
             ]);
         }
 
-
-
-        /*print_r($activeQuery->createCommand()->getRawSql());
-        die;*/
-
         return $this;
     }
-
     /**
      * @param ActiveDataProvider $dataProvider
      */
