@@ -18,7 +18,7 @@ $service = new StorefrontSuggest();
         <h2 id="sx-results-<?= $groupId ?>"><?= Html::encode($group['title']) ?></h2>
         <div class="sx-search-results__items">
             <?php foreach ($group['items'] as $item): ?>
-                <a class="sx-search-results__item" data-id="<?= $item['id'] ?>" href="<?= Html::encode($item['url']) ?>">
+                <a class="sx-search-results__item" data-pjax="0" data-id="<?= $item['id'] ?>" href="<?= Html::encode($item['url']) ?>">
                     <?php if ($item['image']): ?><img src="<?= Html::encode($item['image']) ?>" alt="" loading="lazy" width="80" height="80"><?php endif ?>
                     <span><span class="sx-search-results__name"><?= Html::encode($item['name']) ?></span><span class="sx-search-results__subtitle"><?= Html::encode($item['subtitle']) ?></span></span>
                 </a>

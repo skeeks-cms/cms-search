@@ -36,6 +36,7 @@
                 ids.add(String(item.id));
                 const link = document.createElement('a');
                 link.className = 'sx-search-results__item'; link.href = href; link.dataset.id = item.id;
+                link.dataset.pjax = '0';
                 const imageUrl = item.image && safeUrl(item.image);
                 if (imageUrl) {
                     const img = document.createElement('img');
