@@ -47,7 +47,27 @@ function runSuggestQueryTests(\yii\db\Connection $db): void
         $check(array_map('intval', (clone $all)->column($db)), [7,8,9], 'Merge spellings before pagination without duplicates');
         $check(array_map('intval', (clone $all)->limit(2)->column($db)), [7,8], 'First page keeps original first');
         $check(array_map('intval', (clone $all)->offset(2)->limit(2)->column($db)), [9], 'Next page has no skips or overlap');
-        echo "SuggestQuery: 18 checks passed\n";
+        $db->createCommand()->batchInsert($table, ['id','site','active','name','sku'], [
+            [7045802,1,1,'Belleza Даф бежевая','00-00-5-17'],
+            [7045803,1,1,'7045802','7045802'], [17045802,1,1,'Другой товар','OTHER'],
+            [7045804,1,0,'Скрытый товар','HIDDEN'], [7045805,2,1,'Другой сайт','FOREIGN'],
+        ])->execute();
+        $findProduct = static function ($text, $allSpellings) use ($db, $table) {
+            $query = (new Query())->select('id')->from($table)->where(['site'=>1,'active'=>1]);
+            SuggestQuery::applyProduct($query, $text, ['name','sku'], 'name', 'id', $allSpellings);
+            return array_map('intval', $query->addOrderBy(['id'=>SORT_ASC])->column($db));
+        };
+        foreach ([false, true] as $allSpellings) {
+            $check($findProduct('7045802', $allSpellings), [7045802,7045803], 'Exact ID first; preserve text/SKU matches; no partial IDs');
+            $check($findProduct('7045804', $allSpellings), [], 'ID cannot expose inactive products');
+            $check($findProduct('7045805', $allSpellings), [], 'ID cannot expose another site');
+            $check($findProduct('9999999', $allSpellings), [], 'Missing ID');
+            $check($findProduct('Slim', $allSpellings), [1,2,3,6], 'Keep text matching');
+        }
+        $check(SuggestQuery::isProductId('1'), true, 'Single digit ID');
+        $check(SuggestQuery::isProductId('7045802abc'), false, 'Reject mixed ID');
+        $check(SuggestQuery::isProductId('999999999999999999999'), false, 'Bound numeric ID');
+        echo "SuggestQuery: 31 checks passed\n";
     } finally {
         $db->createCommand("DROP TEMPORARY TABLE `$table`")->execute();
     }

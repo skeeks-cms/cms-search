@@ -153,7 +153,7 @@
             current = normalize();
             matchedQuery = '';
             footer.href = resultUrl(current);
-            if (current.length < 2 || !/[\p{L}\p{N}]/u.test(current)) { close(); return; }
+            if ((current.length < 2 && !/^[1-9]$/.test(current)) || !/[\p{L}\p{N}]/u.test(current)) { close(); return; }
             const previousHeight = panel.hidden ? 0 : panel.getBoundingClientRect().height;
             panel.style.minHeight = previousHeight ? Math.min(previousHeight, window.innerHeight - input.getBoundingClientRect().bottom - 18) + 'px' : '';
             body.inert = true;

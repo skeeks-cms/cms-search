@@ -57,7 +57,7 @@ class StorefrontSuggest
     public function search(string $text): array
     {
         $this->matchedQuery = $text;
-        if (mb_strlen($text) < 2 || !SuggestQuery::words($text)) {
+        if ((mb_strlen($text) < 2 && !SuggestQuery::isProductId($text)) || !SuggestQuery::words($text)) {
             return [];
         }
         $hasShop = class_exists(ShopCollection::class) && \Yii::$app->has('shop');
@@ -256,9 +256,8 @@ class StorefrontSuggest
         if (\Yii::$app->cmsSearch->searchElementContentIds) {
             $query->andWhere(["$table.content_id" => (array) \Yii::$app->cmsSearch->searchElementContentIds]);
         }
-        $matcher = $allSpellings ? 'applyAll' : 'apply';
-        SuggestQuery::$matcher($query, $text, ["$table.name", "$table.external_id", 'shopProduct.brand_sku', 'productBrand.name'], "$table.name");
-        if (mb_strlen($text) < 2) {
+        SuggestQuery::applyProduct($query, $text, ["$table.name", "$table.external_id", 'shopProduct.brand_sku', 'productBrand.name'], "$table.name", "$table.id", $allSpellings);
+        if (mb_strlen($text) < 2 && !SuggestQuery::isProductId($text)) {
             $query->andWhere('0=1');
         }
         return $query->addOrderBy(["$table.priority" => SORT_ASC, "$table.id" => SORT_ASC]);

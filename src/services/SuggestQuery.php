@@ -20,6 +20,26 @@ final class SuggestQuery
         return array_slice($matches[0], 0, 5);
     }
 
+    public static function isProductId(string $text): bool
+    {
+        return (bool) preg_match('/^[1-9][0-9]{0,9}$/D', $text);
+    }
+
+    /** Keep the ID alternative inside existing site/visibility constraints. */
+    public static function applyProduct($query, string $text, array $columns, string $titleColumn, string $idColumn, bool $allSpellings = true): void
+    {
+        $match = new \yii\db\Query();
+        $matcher = $allSpellings ? 'applyAll' : 'apply';
+        self::$matcher($match, $text, $columns, $titleColumn);
+        if (self::isProductId($text)) {
+            $query->andWhere(['or', [$idColumn => $text], $match->where]);
+            $query->orderBy(new Expression("CASE WHEN $idColumn = :sxProductId THEN 0 ELSE 1 END", [':sxProductId' => $text]));
+            $query->addOrderBy($match->orderBy);
+        } else {
+            $query->andWhere($match->where)->orderBy($match->orderBy);
+        }
+    }
+
     /** Two bounded Russian-to-Latin spellings, independent of the intl extension. */
     public static function alternatives(string $text): array
     {
