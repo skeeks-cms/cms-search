@@ -40,7 +40,7 @@ final class SuggestQuery
         }
     }
 
-    /** Two bounded Russian-to-Latin spellings, independent of the intl extension. */
+    /** Bounded Russian-to-Latin spellings, independent of the intl extension. */
     public static function alternatives(string $text): array
     {
         $text = mb_strtolower($text);
@@ -51,7 +51,17 @@ final class SuggestQuery
             preg_split('//u', 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя', -1, PREG_SPLIT_NO_EMPTY),
             ['a','b','v','g','d','e','e','zh','z','i','y','k','l','m','n','o','p','r','s','t','u','f','h','ts','ch','sh','sch','','y','','e','yu','ya']
         );
-        $variants = [strtr($text, $map), strtr($text, array_replace($map, ['й'=>'i', 'х'=>'kh', 'ц'=>'c', 'щ'=>'shch', 'ю'=>'iu', 'я'=>'ia']))];
+        $maps = [$map, array_replace($map, ['й'=>'i', 'х'=>'kh', 'ц'=>'c', 'щ'=>'shch', 'ю'=>'iu', 'я'=>'ia'])];
+        $variants = [strtr($text, $maps[0]), strtr($text, $maps[1])];
+        if (mb_strpos($text, 'дж') !== false) {
+            // Match foreign names such as Privilege and Jungle without losing dzh.
+            // strtr handles the whole digraph before individual letters; at most six variants.
+            foreach (['g', 'j'] as $digraph) {
+                foreach ($maps as $spellingMap) {
+                    $variants[] = strtr($text, array_merge($spellingMap, ['дж' => $digraph]));
+                }
+            }
+        }
         return array_values(array_filter(array_unique($variants), static function ($value) use ($text) {
             return $value !== $text && mb_strlen($value) >= 2 && self::words($value);
         }));
