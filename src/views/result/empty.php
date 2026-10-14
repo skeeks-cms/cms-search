@@ -26,7 +26,7 @@ try {
 <section class="sx-search-empty" aria-labelledby="sx-search-empty-title">
     <h1 id="sx-search-empty-title"><?= $query === '' ? 'Введите название или артикул' : 'По вашему запросу ничего не найдено' ?></h1>
     <p class="sx-search-empty__text"><?= $query === '' ? 'Найдите нужный товар с помощью поиска или выберите раздел каталога.' : 'Проверьте написание или сократите запрос до названия коллекции или артикула. Можно перейти в каталог или обратиться к нам за помощью с подбором.' ?></p>
-    <form class="sx-search-empty__form" action="<?= Html::encode(Url::to(['/cmsSearch/result/index'])) ?>" method="get" data-pjax="0" role="search">
+    <form class="sx-search-empty__form" action="<?= Html::encode(Url::to(['/cmsSearch/result/index'])) ?>" method="get" role="search">
         <label for="sx-search-empty-query">Артикул или название</label>
         <div class="sx-search-empty__input-row">
             <input id="sx-search-empty-query" type="search" name="<?= Html::encode(Yii::$app->cmsSearch->searchQueryParamName) ?>" value="<?= Html::encode($query) ?>" required>
