@@ -11,7 +11,7 @@ $service = new StorefrontSuggest();
 <div class="sx-search-results" data-query="<?= Html::encode($query) ?>" data-endpoint="<?= Html::encode(Url::to(['/cmsSearch/suggest/page'])) ?>">
     <h1>Результаты поиска: «<?= Html::encode($query) ?>»</h1>
     <?php foreach (['sections','filters','brands','collections'] as $groupId):
-        $group = $service->page($query, $groupId);
+        $group = isset($navigationGroups[$groupId]) ? $navigationGroups[$groupId] : $service->page($query, $groupId);
         if (!$group['items']) continue;
     ?>
     <section class="sx-search-results__group" data-group="<?= $groupId ?>" aria-labelledby="sx-results-<?= $groupId ?>">
