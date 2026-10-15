@@ -388,25 +388,26 @@ class CmsSearchComponent extends \skeeks\cms\base\Component
             }
         }
 
-        $tmpWhere = [];
-        foreach ($searchQueryArr as $searchWord) {
-            foreach ($searchWord['variants'] as $value) {
-                $tmpWhere[] = [
-                    '=',
-                    "shopProduct.brand_sku",
-                    $value
-                ];
-            }
+        // Generic content elements have no shop relation. Keep SKU search optional.
+        $modelClass = $activeQuery->modelClass;
+        $model = new $modelClass();
+        if ($model->getRelation('shopProduct', false) !== null) {
+            $activeQuery->joinWith('shopProduct as shopProduct', false);
+            $tmpWhere = [];
+            foreach ($searchQueryArr as $searchWord) {
+                foreach ($searchWord['variants'] as $value) {
+                    $tmpWhere[] = ['=', 'shopProduct.brand_sku', $value];
+                }
 
-            if ($searchWord['normalized']) {
-                $conditionIndex++;
-                $paramName = ':sxSearchSkuNormalized'.$conditionIndex;
-                $tmpWhere[] = new \yii\db\Expression(
-                    "REPLACE(REPLACE(shopProduct.brand_sku, '-', ''), ' ', '') = {$paramName}",
-                    [$paramName => $searchWord['normalized']]
-                );
+                if ($searchWord['normalized']) {
+                    $conditionIndex++;
+                    $paramName = ':sxSearchSkuNormalized'.$conditionIndex;
+                    $tmpWhere[] = new \yii\db\Expression(
+                        "REPLACE(REPLACE(shopProduct.brand_sku, '-', ''), ' ', '') = {$paramName}",
+                        [$paramName => $searchWord['normalized']]
+                    );
+                }
             }
-
             $where[] = array_merge(['or'], $tmpWhere);
         }
 
