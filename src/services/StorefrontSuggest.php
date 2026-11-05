@@ -227,7 +227,7 @@ class StorefrontSuggest
             $item = $this->item($model, $model->name, $product->brand_sku ? 'Арт. '.$product->brand_sku : '');
             $site = \Yii::$app->skeeks->site->shopSite;
             $showPrice = $site && $site->is_show_prices;
-            if ($showPrice && $site->is_show_prices_only_quantity) {
+            if ($showPrice && $site->is_show_prices_only_quantity && !$site->is_show_product_no_quantity) {
                 $stocks = $product->getShopStoreProducts(\Yii::$app->shop->allStores)->all();
                 $showPrice = !$stocks || array_sum(array_map(static function ($stock) { return $stock->quantity; }, $stocks)) > 0;
             }
